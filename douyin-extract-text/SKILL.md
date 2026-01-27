@@ -26,7 +26,7 @@ API 密钥获取：https://dashscope.console.aliyun.com/
 **必须首先执行**，ASR 结果作为最终文案的主体（句子连贯）。
 
 ```bash
-python scripts/douyin_video_processor.py "抖音分享链接" -o ./output
+python $SKILL_DIR/scripts/douyin_video_processor.py "抖音分享链接" -o ./output
 ```
 
 输出：`{video_id}_transcript.txt`
@@ -36,7 +36,7 @@ python scripts/douyin_video_processor.py "抖音分享链接" -o ./output
 **必须执行**，OCR 结果用于订正 ASR 中的专业术语错误。
 
 ```bash
-python scripts/douyin_video_processor.py "抖音分享链接" --ocr -o ./output
+python $SKILL_DIR/scripts/douyin_video_processor.py "抖音分享链接" --ocr -o ./output
 ```
 
 输出：`{video_id}_transcript.txt`（会覆盖，建议先备份 ASR 结果）
@@ -44,11 +44,11 @@ python scripts/douyin_video_processor.py "抖音分享链接" --ocr -o ./output
 **建议命令**（避免覆盖）：
 ```bash
 # ASR 结果
-python scripts/douyin_video_processor.py "链接" -o ./output
+python $SKILL_DIR/scripts/douyin_video_processor.py "链接" -o ./output
 mv ./output/*_transcript.txt ./output/asr_result.txt
 
 # OCR 结果
-python scripts/douyin_video_processor.py "链接" --ocr -o ./output
+python $SKILL_DIR/scripts/douyin_video_processor.py "链接" --ocr -o ./output
 mv ./output/*_transcript.txt ./output/ocr_result.txt
 ```
 

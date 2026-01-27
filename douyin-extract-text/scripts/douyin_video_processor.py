@@ -19,16 +19,56 @@
     DASHSCOPE_API_KEY: 阿里云百炼API密钥（ASR模式需要）
 """
 
+from __future__ import annotations
+
+import subprocess
+import sys
+
+# ============================================================
+# 依赖自动检测与安装
+# ============================================================
+def ensure_dependencies(use_ocr=False):
+    """检查并安装缺失的依赖（首次运行时自动安装）"""
+    # 基础依赖（ASR 模式）
+    REQUIRED = {
+        "dashscope": "dashscope",
+        "requests": "requests",
+    }
+
+    # OCR 模式额外依赖
+    if use_ocr:
+        REQUIRED.update({
+            "cv2": "opencv-python",
+            "numpy": "numpy",
+            "paddleocr": "paddleocr",
+            "paddle": "paddlepaddle",
+        })
+
+    missing = []
+    for module, package in REQUIRED.items():
+        try:
+            __import__(module)
+        except ImportError:
+            missing.append(package)
+
+    if missing:
+        print(f"📦 正在安装缺失的依赖: {missing}")
+        subprocess.check_call(
+            [sys.executable, "-m", "pip", "install", "-q"] + missing,
+        )
+        print("✅ 依赖安装完成\n")
+
+# 检查是否使用 OCR 模式（在 argparse 之前简单检查）
+_use_ocr = "--ocr" in sys.argv
+ensure_dependencies(use_ocr=_use_ocr)
+# ============================================================
+
 import os
 import re
-import sys
 import json
 import argparse
 import tempfile
-import subprocess
 import shutil
-import cv2
-import numpy as np
 from pathlib import Path
 from typing import Optional, List, Dict, Tuple
 from urllib import request
@@ -37,21 +77,15 @@ from concurrent.futures import ThreadPoolExecutor, ProcessPoolExecutor, as_compl
 from difflib import SequenceMatcher
 from multiprocessing import Manager
 
+# 现在可以安全导入所有依赖
 import requests
+import dashscope
 
-# 可选依赖：ASR 模式需要 dashscope
-try:
-    import dashscope
-    HAS_DASHSCOPE = True
-except ImportError:
-    HAS_DASHSCOPE = False
-
-# 可选依赖：OCR 模式需要 paddleocr
-try:
+# OCR 相关依赖延迟导入
+if _use_ocr:
+    import cv2
+    import numpy as np
     from paddleocr import PaddleOCR
-    HAS_PADDLEOCR = True
-except ImportError:
-    HAS_PADDLEOCR = False
 
 # 请求头，模拟移动端访问
 HEADERS = {
@@ -191,11 +225,6 @@ class SubtitleOCR:
             subtitle_area: 字幕区域 (y_start_ratio, y_end_ratio, x_start_ratio, x_end_ratio)
                           例如 (0.75, 0.95, 0.1, 0.9) 表示画面下方 75%-95% 高度，左右各留 10%
         """
-        if not HAS_PADDLEOCR:
-            raise ImportError(
-                "OCR 模式需要安装 paddleocr: pip install paddleocr paddlepaddle"
-            )
-
         # PaddleOCR 3.x API 变化：移除了 show_log, use_angle_cls, use_gpu 等参数
         # GPU 使用由 PaddlePaddle 框架自动检测
         self.ocr = PaddleOCR(lang=lang)
@@ -410,7 +439,7 @@ class DouyinVideoProcessor:
             self.output_dir = Path(tempfile.mkdtemp(prefix="douyin_"))
 
         # 设置阿里云百炼API密钥（ASR 模式需要）
-        if api_key and HAS_DASHSCOPE:
+        if api_key:
             dashscope.api_key = api_key
 
         # 初始化 OCR（延迟加载）
@@ -1072,13 +1101,6 @@ def main():
     )
 
     args = parser.parse_args()
-
-    # 检查依赖
-    if args.ocr and not HAS_PADDLEOCR:
-        print("❌ 错误: OCR 模式需要安装 paddleocr")
-        print("   请执行: pip install paddleocr paddlepaddle")
-        print("   GPU 版本: pip install paddleocr paddlepaddle-gpu")
-        sys.exit(1)
 
     # 检查API密钥（仅ASR模式需要）
     api_key = os.getenv('DASHSCOPE_API_KEY', '')
