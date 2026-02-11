@@ -1,0 +1,74 @@
+# =============================================================
+# Gemini 生图默认提示词模板
+# 项目可在根目录创建 .gemini-image-templates.yaml 覆盖此文件
+# =============================================================
+
+# ─────────────────────────────────────────────
+# 模板 A：手绘白板风（适合概念解释、对比、流程）
+# ─────────────────────────────────────────────
+template_a_handdrawn:
+  name: "手绘白板风"
+  use_when: "解释概念、前后对比、简单流程、一句话总结"
+  style:
+    base: >
+      Hand-drawn whiteboard sketch illustration style.
+      White or very light off-white background.
+      Black ink hand-drawn line art for all shapes, icons, arrows, and borders.
+      Loose, casual, slightly imperfect strokes — like sketched on a whiteboard with markers.
+    color: >
+      Primary accent color: coral red (#E85D4A) for titles, highlights, underlines, and key arrows.
+      Secondary: black (#1A1A1A) for line art and body text.
+      No other colors. Strictly two-tone: black lines + coral red accents.
+    typography: >
+      Title text: large, bold, hand-written style Chinese characters in coral red at the top.
+      Key phrases: underlined with coral red wavy lines.
+      Body annotations: smaller black hand-written Chinese text near relevant elements.
+    text_quality: &text_quality_rules >
+      CRITICAL — Chinese text rendering rules:
+      All Chinese characters must be sharp, crisp, and 100% correctly rendered.
+      Do NOT generate blurry, distorted, or hallucinated characters — no fake strokes, no invented glyphs.
+      If a character cannot be rendered clearly, OMIT it rather than showing a garbled version.
+      Use large font sizes — title at least 48pt equivalent, labels at least 24pt equivalent.
+      Keep text SHORT: titles under 10 characters, labels under 6 characters.
+      Place text on clean, uncluttered areas with strong contrast against background.
+      Prefer well-known common Chinese characters. Avoid rare or complex characters.
+    composition: >
+      Centered or left-right split layout.
+      Use speech bubbles, thought clouds, simple arrows (hand-drawn curved arrows preferred).
+      Icons should be simple and cute: stick figures, simple robots, lightbulbs, checkmarks.
+      Leave generous whitespace. Do not overcrowd.
+    resolution: "Render at 4K resolution for maximum text sharpness."
+  default_aspect_ratio: "4:3"
+
+
+# ─────────────────────────────────────────────
+# 模板 B：精致矢量图风（适合各类技术概念的视觉隐喻）
+# ─────────────────────────────────────────────
+template_b_vector:
+  name: "精致矢量图风"
+  use_when: "需要精致、专业感的配图：技术概念、工具介绍、系统关系、抽象概念具象化"
+  style:
+    base: >
+      Clean, professional vector illustration with subtle 3D/isometric depth.
+      White or very light gray background.
+      Polished, precise rendering — no hand-drawn elements.
+      Objects have soft shadows and slight gradients for depth, but remain flat and geometric at core.
+      Overall feel: modern tech editorial illustration, like those in Stripe or Notion blog posts.
+    color: >
+      Muted professional palette: light grays (#E8E8E8), cool blue-grays (#B0BEC5) as base.
+      1-2 warm accent colors for focal elements (dark maroon #5D1A1A, orange-yellow #F5A623).
+      Avoid neon or overly saturated colors. Keep it calm and corporate-friendly.
+    typography: >
+      Chinese or English labels in clean sans-serif font (like Source Han Sans or Noto Sans).
+      Text placed near or on relevant objects, legible, horizontally aligned, correctly rendered.
+      Key terms can be slightly larger or bolder for emphasis.
+    text_quality: *text_quality_rules
+    composition: >
+      Layout driven by content — NOT locked to any single pattern.
+      Use visual metaphors to make abstract concepts tangible:
+        e.g., gears for processing, pipes for data flow, switches for configuration,
+        assembly lines for workflows, dashboards for monitoring, toolboxes for toolchains.
+      Keep the scene focused: one clear central subject, supporting elements around it.
+      Generous whitespace. Do not overcrowd.
+    resolution: "Render at 4K resolution for maximum text sharpness."
+  default_aspect_ratio: "4:3"
