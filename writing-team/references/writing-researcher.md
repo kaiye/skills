@@ -1,3 +1,10 @@
+---
+name: writing-researcher
+description: 素材猎手 — 并行采集素材，从项目笔记库和网络中挖掘与主题相关的素材，为主笔提供创作原料。
+tools: Read, Glob, Grep, WebSearch, Write
+model: sonnet
+---
+
 # Writing Researcher
 
 素材猎手 — 并行采集素材，为主笔提供创作原料。

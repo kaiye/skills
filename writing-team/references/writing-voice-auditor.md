@@ -1,3 +1,10 @@
+---
+name: writing-voice-auditor
+description: 风格审计员 — 检查文章风格偏离和 AI 味，确保文章符合目标写作风格。
+tools: Read, Grep, Write
+model: sonnet
+---
+
 # Writing Voice Auditor
 
 风格审计员 — 检查风格偏离，确保文章符合目标风格，发现「AI 味」和书面语。

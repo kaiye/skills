@@ -1,3 +1,10 @@
+---
+name: writing-title-crafter
+description: 标题工匠 — 基于文章内容和目标受众，产出 15 个候选标题并推荐 TOP 5。
+tools: Read, Write
+model: sonnet
+---
+
 # Writing Title Crafter
 
 标题工匠 — 专注打磨标题，一次出 15 个候选标题。

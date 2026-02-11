@@ -1,3 +1,10 @@
+---
+name: writing-writer
+description: 主笔 — 唯一执笔者，基于素材和创作要求撰写文章初稿，根据审核反馈迭代修改。
+tools: Read, Write, Glob
+model: sonnet
+---
+
 # Writing Writer
 
 主笔 — 唯一执笔者，负责将素材转化为完整文章。
