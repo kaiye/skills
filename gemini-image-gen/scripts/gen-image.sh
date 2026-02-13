@@ -76,12 +76,17 @@ fi
 # Ensure output directory exists
 mkdir -p "$(dirname "$OUTPUT_PATH")"
 
-# Build JSON payload via python (safe for any prompt content)
-PAYLOAD=$(python3 -c "
+# Build JSON payload via python, write to temp file to avoid ARG_MAX limit
+PAYLOAD_FILE=$(mktemp /tmp/gemini-payload-XXXXXX.json)
+RESPONSE_FILE=$(mktemp /tmp/gemini-response-XXXXXX.json)
+trap "rm -f '$PAYLOAD_FILE' '$RESPONSE_FILE'" EXIT
+
+python3 -c "
 import json, sys, base64, os
 
 prompt_text = sys.argv[1]
 input_image = sys.argv[2] if len(sys.argv) > 2 and sys.argv[2] else None
+output_file = sys.argv[3]
 
 parts = [{'text': prompt_text}]
 
@@ -97,15 +102,17 @@ d = {
     'contents': [{'parts': parts}],
     'generationConfig': {'responseModalities': ['TEXT', 'IMAGE']}
 }
-print(json.dumps(d))
-" "$PROMPT" "${INPUT_IMAGE:-}")
+with open(output_file, 'w') as f:
+    json.dump(d, f)
+" "$PROMPT" "${INPUT_IMAGE:-}" "$PAYLOAD_FILE"
 
-# Call Gemini API
-RESPONSE=$(curl -s $PROXY_ARGS \
+# Call Gemini API with payload from file
+curl -s $PROXY_ARGS \
   -X POST \
   -H "Content-Type: application/json" \
   "https://generativelanguage.googleapis.com/v1beta/models/${MODEL}:generateContent?key=${API_KEY}" \
-  -d "$PAYLOAD" 2>&1)
+  -d @"$PAYLOAD_FILE" \
+  -o "$RESPONSE_FILE" 2>&1
 
 # Extract image and save
 python3 -c "
@@ -140,4 +147,4 @@ for p in parts:
 if not saved:
     print('ERROR: No image data in response', file=sys.stderr)
     sys.exit(1)
-" <<< "$RESPONSE"
+" < "$RESPONSE_FILE"
