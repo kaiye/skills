@@ -17,7 +17,7 @@ ASR 模式需要阿里云百炼 API 密钥，在 shell 配置文件中设置：
 export DASHSCOPE_API_KEY='your-api-key'
 ```
 
-API 密钥获取：https://dashscope.console.aliyun.com/
+API 密钥获取：https://bailian.console.aliyun.com/cn-beijing/?tab=demohouse#/api-key
 
 ## 工作流程（必须按顺序执行）
 
