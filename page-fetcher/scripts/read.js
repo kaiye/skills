@@ -66,7 +66,9 @@ if (rule.selector) {
   extractedHtml = bySel;
 }
 
-const strategy = rule.strategy; // optional
+// When a selector is used, content is already scoped — skip strategy to avoid
+// html2md4llm's extractArticle filtering out img nodes (which have no text children).
+const strategy = rule.selector ? undefined : rule.strategy;
 
 if (outputJson) {
   const json = html2md4llm(extractedHtml, { outputFormat: 'json', strategy });
