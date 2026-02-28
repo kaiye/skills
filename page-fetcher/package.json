@@ -1,0 +1,10 @@
+{
+  "name": "page-fetcher-skill",
+  "private": true,
+  "type": "module",
+  "version": "0.2.0",
+  "description": "Fetch a page with UA, extract a subtree by simple selector, and convert HTML to Markdown/JSON via html2md4llm.",
+  "dependencies": {
+    "html2md4llm": "^1.0.0"
+  }
+}
