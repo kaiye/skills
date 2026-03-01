@@ -1,10 +1,12 @@
 #!/bin/bash
 # Gemini Image Generation & Editing Script
-# Usage: gen-image.sh [-o output_path] [-i input_image] <prompt>
+# Usage: gen-image.sh [-o output_path] [-i input_image] [-s size] [-a aspect_ratio] <prompt>
 #
 # Options:
 #   -o output_path    Save image to this path (default: ./generated-YYYYMMDD-HHMMSS.png)
 #   -i input_image    Input image for editing (supports png/jpg/webp)
+#   -s size           Image size: 512px | 1K | 2K | 4K (default: 2K)
+#   -a aspect_ratio   Aspect ratio: 1:1 | 9:16 | 16:9 | 3:4 | 4:3 etc. (default: unset)
 #
 # Environment variables:
 #   GEMINI_API_KEY       (required) Google AI Studio API key
@@ -16,16 +18,20 @@ set -euo pipefail
 # ── Parse arguments ──
 OUTPUT_PATH=""
 INPUT_IMAGE=""
-while getopts "o:i:" opt; do
+IMAGE_SIZE="2K"
+ASPECT_RATIO=""
+while getopts "o:i:s:a:" opt; do
   case $opt in
     o) OUTPUT_PATH="$OPTARG" ;;
     i) INPUT_IMAGE="$OPTARG" ;;
-    *) echo "Usage: gen-image.sh [-o output_path] [-i input_image] <prompt>" >&2; exit 1 ;;
+    s) IMAGE_SIZE="$OPTARG" ;;
+    a) ASPECT_RATIO="$OPTARG" ;;
+    *) echo "Usage: gen-image.sh [-o output_path] [-i input_image] [-s 2K] [-a 9:16] <prompt>" >&2; exit 1 ;;
   esac
 done
 shift $((OPTIND - 1))
 
-PROMPT="${1:?Usage: gen-image.sh [-o output_path] [-i input_image] <prompt>}"
+PROMPT="${1:?Usage: gen-image.sh [-o output_path] [-i input_image] [-s 2K] [-a 9:16] <prompt>}"
 
 # Default output path: current directory with timestamp
 if [ -z "$OUTPUT_PATH" ]; then
@@ -87,6 +93,8 @@ import json, sys, base64, os
 prompt_text = sys.argv[1]
 input_image = sys.argv[2] if len(sys.argv) > 2 and sys.argv[2] else None
 output_file = sys.argv[3]
+image_size = sys.argv[4] if len(sys.argv) > 4 and sys.argv[4] else '2K'
+aspect_ratio = sys.argv[5] if len(sys.argv) > 5 and sys.argv[5] else None
 
 parts = [{'text': prompt_text}]
 
@@ -98,13 +106,20 @@ if input_image:
         img_b64 = base64.b64encode(f.read()).decode()
     parts.append({'inlineData': {'mimeType': mime_type, 'data': img_b64}})
 
+image_config = {'imageSize': image_size}
+if aspect_ratio:
+    image_config['aspectRatio'] = aspect_ratio
+
 d = {
     'contents': [{'parts': parts}],
-    'generationConfig': {'responseModalities': ['TEXT', 'IMAGE']}
+    'generationConfig': {
+        'responseModalities': ['TEXT', 'IMAGE'],
+        'imageConfig': image_config
+    }
 }
 with open(output_file, 'w') as f:
     json.dump(d, f)
-" "$PROMPT" "${INPUT_IMAGE:-}" "$PAYLOAD_FILE"
+" "$PROMPT" "${INPUT_IMAGE:-}" "$PAYLOAD_FILE" "${IMAGE_SIZE}" "${ASPECT_RATIO:-}"
 
 # Call Gemini API with payload from file
 curl -s $PROXY_ARGS \
