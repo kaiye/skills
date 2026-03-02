@@ -1,0 +1,265 @@
+/* markdown-to-pdf 自定义样式
+ * 优化：表格第一列不换行 + 修复大段空白
+ */
+
+/* ========== 页面设置 ========== */
+@page {
+    size: A4;
+    margin: 2cm;
+}
+
+/* ========== 基础排版 ========== */
+body {
+    font-family: "Noto Sans CJK SC", "Microsoft YaHei", "PingFang SC", "Hiragino Sans GB", sans-serif;
+    font-size: 14px;
+    line-height: 1.8;
+    color: #333;
+    margin: 0;
+    padding: 0;
+}
+
+/* ========== 标题 ========== */
+h1, h2, h3, h4, h5, h6 {
+    margin-top: 1.5em;
+    margin-bottom: 0.8em;
+    page-break-after: avoid;
+    font-weight: 600;
+}
+
+h1 {
+    font-size: 24px;
+    color: #2c3e50;
+    border-bottom: 3px solid #3498db;
+    padding-bottom: 10px;
+    margin-top: 0; /* 第一个标题不要上边距 */
+}
+
+h2 {
+    font-size: 20px;
+    color: #34495e;
+    border-bottom: 2px solid #95a5a6;
+    padding-bottom: 8px;
+}
+
+h3 {
+    font-size: 16px;
+    color: #7f8c8d;
+}
+
+h4 {
+    font-size: 14px;
+    color: #95a5a6;
+}
+
+/* ========== 段落 ========== */
+p {
+    margin: 0.6em 0; /* 减少段落间距，避免大段空白 */
+}
+
+/* ========== 列表 ========== */
+ul, ol {
+    margin: 0.8em 0;
+    padding-left: 2em;
+}
+
+li {
+    margin: 0.3em 0;
+}
+
+/* ========== 表格（核心优化）========== */
+table {
+    width: 100%;
+    border-collapse: collapse;
+    margin: 1.2em 0;
+    page-break-inside: avoid; /* 避免表格跨页断裂 */
+    font-size: 13px; /* 稍微缩小字号，避免溢出 */
+}
+
+thead {
+    display: table-header-group; /* 多页表格时重复表头 */
+}
+
+th, td {
+    border: 1px solid #ddd;
+    padding: 10px 12px;
+    text-align: left;
+    vertical-align: top;
+}
+
+th {
+    background-color: #3498db;
+    color: white;
+    font-weight: 600;
+}
+
+/* 🔥 关键修复：表格第一列不换行 */
+th:first-child,
+td:first-child {
+    white-space: nowrap;
+    font-weight: 500;
+}
+
+/* 斑马纹 */
+tbody tr:nth-child(even) {
+    background-color: #f9f9f9;
+}
+
+/* 表格内的代码 */
+table code {
+    font-size: 11px;
+}
+
+/* ========== 代码块 ========== */
+code {
+    background-color: #f4f4f4;
+    padding: 2px 6px;
+    border-radius: 3px;
+    font-family: "Consolas", "Monaco", "Courier New", monospace;
+    font-size: 12px;
+    color: #c7254e;
+}
+
+pre {
+    background-color: #f8f8f8;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+    padding: 12px;
+    overflow-x: auto;
+    margin: 1em 0;
+    page-break-inside: avoid;
+}
+
+pre code {
+    background-color: transparent;
+    padding: 0;
+    color: #333;
+    font-size: 12px;
+    line-height: 1.5;
+}
+
+/* ========== 引用 ========== */
+blockquote {
+    border-left: 4px solid #3498db;
+    padding-left: 1em;
+    margin: 1em 0;
+    color: #555;
+    font-style: italic;
+}
+
+/* ========== 分隔线 ========== */
+hr {
+    border: none;
+    border-top: 2px solid #ddd;
+    margin: 2em 0;
+}
+
+/* ========== 链接 ========== */
+a {
+    color: #3498db;
+    text-decoration: none;
+}
+
+a:hover {
+    text-decoration: underline;
+}
+
+/* ========== 图片 ========== */
+img {
+    max-width: 100%;
+    height: auto;
+    display: block;
+    margin: 1em auto;
+    page-break-inside: avoid;
+}
+
+/* ========== 强调 ========== */
+strong, b {
+    font-weight: 600;
+    color: #2c3e50;
+}
+
+em, i {
+    font-style: italic;
+    color: #555;
+}
+
+/* ========== 修复空白问题 ========== */
+/* 移除首尾多余空白 */
+body > *:first-child {
+    margin-top: 0 !important;
+}
+
+body > *:last-child {
+    margin-bottom: 0 !important;
+}
+
+/* 相邻标题之间减少间距 */
+h1 + h2,
+h2 + h3,
+h3 + h4 {
+    margin-top: 1em;
+}
+
+/* 列表和段落之间减少间距 */
+p + ul,
+p + ol,
+ul + p,
+ol + p {
+    margin-top: 0.5em;
+}
+
+/* ========== 打印优化 ========== */
+@media print {
+    body {
+        font-size: 12pt;
+    }
+    
+    h1 {
+        font-size: 18pt;
+    }
+    
+    h2 {
+        font-size: 16pt;
+    }
+    
+    h3 {
+        font-size: 14pt;
+    }
+    
+    /* 避免孤行/寡行 */
+    p, li {
+        orphans: 3;
+        widows: 3;
+    }
+    
+    /* 避免标题后立即分页 */
+    h1, h2, h3, h4, h5, h6 {
+        page-break-after: avoid;
+    }
+    
+    /* 避免图片/表格/代码块分页 */
+    img, table, pre {
+        page-break-inside: avoid;
+    }
+}
+
+/* ========== Emoji 支持 ========== */
+.emoji {
+    font-family: "Apple Color Emoji", "Segoe UI Emoji", "Noto Color Emoji", sans-serif;
+    font-size: 1.2em;
+    vertical-align: middle;
+}
+
+/* ========== 复选框（任务列表）========== */
+input[type="checkbox"] {
+    margin-right: 0.5em;
+}
+
+/* ========== 脚注 ========== */
+.footnote {
+    font-size: 12px;
+    color: #666;
+    border-top: 1px solid #ddd;
+    padding-top: 1em;
+    margin-top: 2em;
+}
