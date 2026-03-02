@@ -1,0 +1,19 @@
+{
+  "name": "md2pdf",
+  "version": "1.0.0",
+  "description": "Convert Markdown to PDF using marked + Chrome headless",
+  "main": "md2pdf.js",
+  "bin": {
+    "md2pdf": "./md2pdf.js"
+  },
+  "scripts": {
+    "test": "node md2pdf.js test.md"
+  },
+  "dependencies": {
+    "marked": "^17.0.3",
+    "puppeteer-core": "^23.11.1"
+  },
+  "keywords": ["markdown", "pdf", "chrome", "headless"],
+  "author": "kaiye",
+  "license": "MIT"
+}
