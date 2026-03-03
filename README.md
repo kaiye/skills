@@ -9,6 +9,7 @@ Claude Code 自定义 Skills 集合。
 | [comic-gen](./comic-gen/) | 生成四格漫画（起承转合结构）。用户提供故事大纲，自动生成完整的四格漫画。内部调用 gemini-image-gen 进行图片生成。 |
 | [douyin-extract-text](./douyin-extract-text/) | 从抖音视频中提取文案。支持 OCR（硬字幕识别）和 ASR（语音识别）两种模式，并自动进行专业术语订正。 |
 | [gemini-image-gen](./gemini-image-gen/) | 使用 Gemini 生成和编辑配图。支持手绘白板风、精致矢量图风、四格漫画三种预设模板，项目可自定义模板覆盖默认值。 |
+| [md2pdf](./md2pdf/) | 将 Markdown 文件转换为 PDF，支持中文、表格、代码高亮。基于 marked + Chrome headless，跨平台兼容。 |
 | [page-fetcher](./page-fetcher/) | 智能网页抓取器（自动降级：HTTP → Puppeteer + Cookie）。支持 OpenClaw browser relay 自动提取 cookie，或通过 mcp-fetch-page 扩展手动提供。按 rules.json 配置选择器和策略。 |
 | [wechat-publisher](./wechat-publisher/) | 将 Markdown 文章规范化处理后发布到微信公众号草稿箱，支持发布前预检、图片路径修复与封面图生成。 |
 | [writing-team](./writing-team/) | 7 人 AI 写作团队编排。素材猎手、主笔、事实核查、风格审计、标题工匠协作完成长文创作，支持迭代修改和按需审核。 |
@@ -25,7 +26,6 @@ skills/
 ├── README.md
 ├── comic-gen/
 │   ├── SKILL.md          # Skill 定义文件
-│   ├── README.md         # 使用说明
 │   ├── examples/
 │   │   └── programmer-war.yaml  # 示例故事大纲
 │   └── scripts/
@@ -42,6 +42,11 @@ skills/
 │   │   └── 4panel-comic.yaml  # 四格漫画模板
 │   └── scripts/
 │       └── gen-image.sh  # 图片生成脚本
+├── md2pdf/
+│   ├── SKILL.md          # Skill 定义文件
+│   ├── md2pdf.js         # 主脚本（Node.js）
+│   ├── package.json      # 依赖配置（marked, puppeteer-core）
+│   └── package-lock.json
 ├── page-fetcher/
 │   ├── SKILL.md          # Skill 定义文件（自动降级抓取策略）
 │   ├── rules.json        # hostname→ua/selector/strategy 配置
