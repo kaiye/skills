@@ -6,9 +6,10 @@ Claude Code 自定义 Skills 集合。
 
 | Skill | 描述 |
 |-------|------|
+| [comic-gen](./comic-gen/) | 生成四格漫画（起承转合结构）。用户提供故事大纲，自动生成完整的四格漫画。内部调用 gemini-image-gen 进行图片生成。 |
 | [douyin-extract-text](./douyin-extract-text/) | 从抖音视频中提取文案。支持 OCR（硬字幕识别）和 ASR（语音识别）两种模式，并自动进行专业术语订正。 |
-| [gemini-image-gen](./gemini-image-gen/) | 使用 Gemini 生成和编辑配图。支持手绘白板风和精致矢量图风两种预设模板，项目可自定义模板覆盖默认值。 |
-| [page-fetcher](./page-fetcher/) | 通用网页抓取器（UA 伪装 + selector 抽取），再用 html2md4llm 转 Markdown/JSON；内置 mp.weixin.qq.com 规则示例。 |
+| [gemini-image-gen](./gemini-image-gen/) | 使用 Gemini 生成和编辑配图。支持手绘白板风、精致矢量图风、四格漫画三种预设模板，项目可自定义模板覆盖默认值。 |
+| [page-fetcher](./page-fetcher/) | 智能网页抓取器（自动降级：HTTP → Puppeteer + Cookie）。支持 OpenClaw browser relay 自动提取 cookie，或通过 mcp-fetch-page 扩展手动提供。按 rules.json 配置选择器和策略。 |
 | [wechat-publisher](./wechat-publisher/) | 将 Markdown 文章规范化处理后发布到微信公众号草稿箱，支持发布前预检、图片路径修复与封面图生成。 |
 | [writing-team](./writing-team/) | 7 人 AI 写作团队编排。素材猎手、主笔、事实核查、风格审计、标题工匠协作完成长文创作，支持迭代修改和按需审核。 |
 
@@ -22,6 +23,13 @@ Claude Code 自定义 Skills 集合。
 skills/
 ├── .gitignore
 ├── README.md
+├── comic-gen/
+│   ├── SKILL.md          # Skill 定义文件
+│   ├── README.md         # 使用说明
+│   ├── examples/
+│   │   └── programmer-war.yaml  # 示例故事大纲
+│   └── scripts/
+│       └── gen-comic.sh  # 漫画生成脚本（WIP）
 ├── douyin-extract-text/
 │   ├── SKILL.md          # Skill 定义文件
 │   ├── CORRECTION.md     # 术语订正词表
@@ -30,15 +38,22 @@ skills/
 ├── gemini-image-gen/
 │   ├── SKILL.md          # Skill 定义文件
 │   ├── templates/
-│   │   └── default.yaml  # 默认风格模板
+│   │   ├── default.yaml       # 默认风格模板（手绘风 + 矢量风）
+│   │   └── 4panel-comic.yaml  # 四格漫画模板
 │   └── scripts/
 │       └── gen-image.sh  # 图片生成脚本
 ├── page-fetcher/
-│   ├── SKILL.md          # Skill 定义文件（通用抓取+选择器抽取+转Markdown）
+│   ├── SKILL.md          # Skill 定义文件（自动降级抓取策略）
 │   ├── rules.json        # hostname→ua/selector/strategy 配置
-│   ├── package.json      # Node 依赖（html2md4llm）
+│   ├── package.json      # Node 依赖（puppeteer-core, html2md4llm）
+│   ├── cookies/          # Cookie 存储目录
+│   ├── pages/            # 抓取结果缓存
 │   └── scripts/
-│       └── read.js
+│       ├── fetch.js           # 主入口（自动降级）
+│       ├── read.js            # 轻量 HTTP 抓取
+│       ├── read-spa.js        # Puppeteer 抓取（需 cookie）
+│       ├── extract-cookies.js # 从 browser relay 提取 cookie
+│       └── save-cookie.js     # 保存用户上传的 cookie
 ├── wechat-publisher/
 │   ├── SKILL.md          # Skill 定义文件（公众号发布流程）
 │   └── references/
