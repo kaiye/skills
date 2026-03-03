@@ -1,0 +1,75 @@
+title: "程序员危机：从办公室到战场"
+style: "handdrawn"
+aspect_ratio: "16:9"
+
+characters:
+  - name: "程序员A"
+    description: "男性，穿连帽衫，困惑/担心的表情，坐在办公桌前用笔记本电脑"
+  - name: "程序员B"
+    description: "男性，T恤牛仔裤，看手机，分析型表情"
+  - name: "碳基指挥官"
+    description: "人类士兵，穿未来装甲，坚定表情（仅 Panel 4）"
+  - name: "硅基机器人"
+    description: "人形机器人，发光的眼睛，防御姿态（仅 Panel 4）"
+
+panels:
+  panel_1:
+    scene: "现代办公室，两个程序员坐在办公桌前用笔记本电脑"
+    characters: ["程序员A", "程序员B"]
+    action: "程序员A盯着屏幕，困惑表情。程序员B也看着屏幕，皱眉。两台笔记本都显示 Connection Error"
+    dialogue:
+      - speaker: "程序员A"
+        text: "我的 Claude 挂了！你的还能用吗？"
+      - speaker: "程序员B"
+        text: "我的也不行...让我看看发生了什么。"
+    visual_elements:
+      - "笔记本屏幕显示 Connection Error"
+
+  panel_2:
+    scene: "程序员B拿着手机的特写"
+    characters: ["程序员B"]
+    action: "程序员B拿着智能手机，震惊表情，手机屏幕发光。手机屏幕显示新闻标题和蘑菇云图标"
+    dialogue:
+      - speaker: "程序员B"
+        text: "天啊！X 上说 Anthropic 数据中心被伊朗导弹炸了！"
+    visual_elements:
+      - "手机屏幕显示 Breaking: AI Data Center Destroyed 和蘑菇云图标"
+
+  panel_3:
+    scene: "办公室，程序员A站起来收拾东西"
+    characters: ["程序员A", "程序员B"]
+    action: "程序员A从办公桌站起来，收拾包，无奈耸肩，半开玩笑表情。程序员B还在看手机（背景）。程序员A的笔记本屏幕显示 404 Not Found"
+    dialogue:
+      - speaker: "程序员A"
+        text: "好吧，那我下班了。没有 Claude，我什么都不是。"
+    visual_elements:
+      - "笔记本屏幕显示 404 Not Found"
+
+  panel_4:
+    scene: "2126年，未来战场"
+    style_override: "赛博朋克 + 战争场景，冷色调（蓝紫色）"
+    characters: ["碳基指挥官", "硅基机器人"]
+    action: "黑暗天空，激光束交叉。背景是巨大的数据中心建筑，上面有 Anthropic 2126 和 Claude Ω 标志。碳基人类指挥官穿未来装甲，指向前方，下达命令。硅基人形机器人发光眼睛，守卫数据中心。导弹飞向建筑。背景有爆炸和激光火力"
+    dialogue:
+      - speaker: "碳基指挥官"
+        text: "摧毁云端核心！"
+      - speaker: "硅基机器人"
+        text: "守住数据中心！"
+    visual_elements:
+      - "数据中心建筑上的 Anthropic 2126 标志"
+      - "Claude Ω 标志"
+      - "导弹、爆炸、激光"
+
+chinese_labels:
+  - "Claude"
+  - "挂了"
+  - "还能用"
+  - "数据中心"
+  - "导弹"
+  - "炸了"
+  - "下班了"
+  - "什么都不是"
+  - "摧毁"
+  - "云端核心"
+  - "守住"
+  - "Anthropic"

@@ -1,0 +1,86 @@
+# =============================================================
+# 四格漫画模板（基于 Gemini 生图）
+# 用于生成 2x2 网格布局的四格漫画
+# =============================================================
+
+template_c_4panel_comic:
+  name: "四格漫画"
+  use_when: "需要生成起承转合结构的四格漫画，适合讲故事、展示流程、幽默段子"
+  style:
+    base: >
+      Hand-drawn whiteboard sketch illustration style.
+      White or very light off-white background.
+      Black ink hand-drawn line art for all shapes, icons, arrows, and borders.
+      Loose, casual, slightly imperfect strokes — like sketched on a whiteboard with markers.
+      Animated cartoon style with vibrant colors and thick outlines.
+    color: >
+      Primary accent color: coral red (#E85D4A) for titles, highlights, underlines, and key arrows.
+      Secondary: black (#1A1A1A) for line art and body text.
+      Use vibrant colors for characters and objects while maintaining readability.
+    typography: >
+      Panel titles: large, bold, hand-written style Chinese characters in coral red at the top of each panel.
+      Speech bubbles: clear, readable Chinese text with appropriate bubble styles (standard, shout, whisper, thought cloud).
+      Keep dialogue SHORT and punchy — under 20 characters per bubble.
+    text_quality: &text_quality_rules >
+      CRITICAL — Chinese text rendering rules:
+      All Chinese characters must be sharp, crisp, and 100% correctly rendered.
+      Do NOT generate blurry, distorted, or hallucinated characters — no fake strokes, no invented glyphs.
+      If a character cannot be rendered clearly, OMIT it rather than showing a garbled version.
+      Use large font sizes — panel titles at least 36pt equivalent, speech bubbles at least 20pt equivalent.
+      Keep text SHORT: panel titles under 8 characters, speech bubbles under 20 characters.
+      Place text on clean, uncluttered areas with strong contrast against background.
+      Prefer well-known common Chinese characters. Avoid rare or complex characters.
+    composition: >
+      4-panel comic strip layout in a 2x2 grid (top-left, top-right, bottom-left, bottom-right).
+      Each panel should have:
+      - A clear panel title in coral red (起/承/转/合 or custom)
+      - Distinct scene and character positioning
+      - Speech bubbles with appropriate styles
+      - Generous whitespace within each panel
+      Follow 起承转合 (setup, development, twist, conclusion) narrative structure.
+      Characters should be consistent across all panels.
+      Use visual storytelling: expressions, body language, motion lines, symbols (Zzz, sweat drops, spirals, etc.).
+    resolution: "Render at 4K resolution for maximum text sharpness."
+  default_aspect_ratio: "16:9"
+  
+  # 使用说明
+  usage_template: |
+    Scene (16:9 aspect ratio):
+    A 4-panel comic strip layout (2x2 grid). [整体风格描述]
+    
+    Character profiles:
+    - [角色名]: [外观描述、性格特征]
+    - [角色名]: [外观描述、性格特征]
+    ...
+    
+    Panel 1 (top-left): [标题]
+    [场景描述]
+    Speech bubbles:
+    - [角色名]: "[对话内容]"
+    - [角色名]: "[对话内容]"
+    
+    Panel 2 (top-right): [标题]
+    [场景描述]
+    Speech bubbles:
+    - [角色名]: "[对话内容]"
+    
+    Panel 3 (bottom-left): [标题]
+    [场景描述]
+    Speech bubbles:
+    - [角色名]: "[对话内容]"
+    
+    Panel 4 (bottom-right): [标题]
+    [场景描述]
+    Speech bubbles:
+    - [角色名]: "[对话内容]"
+    
+    Chinese labels: [所有需要渲染的中文关键词，逗号分隔]
+  
+  # 示例场景（可选，供参考）
+  example_themes:
+    - "AI 办公室日常（海绵宝宝风格）"
+    - "程序员 debug 四部曲"
+    - "产品经理 vs 开发者"
+    - "AI 模型训练过程拟人化"
+    - "技术选型的心路历程"
+    - "开源项目维护者的一天"
