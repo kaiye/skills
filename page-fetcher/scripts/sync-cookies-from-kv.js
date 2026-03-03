@@ -9,15 +9,34 @@ import fs from 'fs';
 import path from 'path';
 import { fileURLToPath } from 'url';
 
+// 自动加载 .env 文件（Node 20.6+ 原生支持，兼容旧版手动加载）
+const __envFilename = fileURLToPath(import.meta.url);
+const __envDirname = path.dirname(__envFilename);
+const envPath = path.resolve(__envDirname, '..', '.env');
+if (fs.existsSync(envPath)) {
+  const envContent = fs.readFileSync(envPath, 'utf8');
+  for (const line of envContent.split('\n')) {
+    const match = line.match(/^([^#=]+)=(.*)$/);
+    if (match) process.env[match[1].trim()] = match[2].trim();
+  }
+}
+
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 const SKILL_DIR = path.resolve(__dirname, '..');
 const COOKIE_DIR = path.join(SKILL_DIR, 'cookies');
 
-// Cloudflare KV 配置
-const ACCOUNT_ID = process.env.CF_ACCOUNT_ID || '0f467e6ef8cf733c0811a737563141d7';
-const NAMESPACE_ID = process.env.CF_NAMESPACE_ID || 'bdce935ed9d943958e6fbc986f56d4f3';
-const API_TOKEN = process.env.CF_API_TOKEN || 'o1jevOTxknpLqcu-r5M406K9cQNp12wXA7POINc9';
+// Cloudflare KV 配置（从环境变量或 .env 文件读取，不硬编码敏感信息）
+const ACCOUNT_ID = process.env.CF_ACCOUNT_ID;
+const NAMESPACE_ID = process.env.CF_NAMESPACE_ID;
+const API_TOKEN = process.env.CF_API_TOKEN;
+
+if (!ACCOUNT_ID || !NAMESPACE_ID || !API_TOKEN) {
+  console.error('❌ 缺少 Cloudflare KV 配置，请设置环境变量：');
+  console.error('   CF_ACCOUNT_ID, CF_NAMESPACE_ID, CF_API_TOKEN');
+  console.error('   或在 skills/page-fetcher/ 目录创建 .env 文件');
+  process.exit(1);
+}
 
 // 确保目录存在
 if (!fs.existsSync(COOKIE_DIR)) {
