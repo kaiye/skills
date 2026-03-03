@@ -166,6 +166,34 @@ class CookieManager {
     return result;
   }
 
+
+  // 读取 Sync Your Cookie 格式的 cookie 数据
+  loadFromSyncYourCookie(domain) {
+    const syncFile = path.join(COOKIE_DIR, 'sync-your-cookie.json');
+    if (!fs.existsSync(syncFile)) return null;
+
+    try {
+      const data = JSON.parse(fs.readFileSync(syncFile, 'utf-8'));
+      if (!data.domainCookieMap?.[domain]) return null;
+
+      const domainData = data.domainCookieMap[domain];
+      const localStorage = {};
+      for (const item of domainData.localStorageItems || []) {
+        if (!item || typeof item.key !== 'string') continue;
+        localStorage[item.key] = item.value;
+      }
+
+      return {
+        cookies: domainData.cookies || [],
+        localStorage,
+        userAgent: domainData.userAgent
+      };
+    } catch (error) {
+      console.error(`加载 Sync Your Cookie 数据失败: ${error.message}`);
+      return null;
+    }
+  }
+
   // 从所有文件加载并合并cookie和localStorage（仅分域名）
   loadAndMergeAllCookies() {
     const files = this.listAllCookieFiles();
@@ -220,6 +248,27 @@ class CookieManager {
       return null;
     }
     return merged;
+  }
+
+
+  // 获取指定域名的cookie（优先 Sync Your Cookie，失败则回退到旧逻辑）
+  getCookiesForDomain(domain) {
+    const fromSync = this.loadFromSyncYourCookie(domain);
+    if (fromSync) return fromSync;
+
+    const filePath = this.findCookieFile(domain);
+    if (!filePath) {
+      console.error(`未找到域名 ${domain} 的Cookie（sync-your-cookie.json 未命中，且未找到本地 *_cookies.json 文件）`);
+      return null;
+    }
+
+    const data = this.loadCookiesFromFile(filePath);
+    if (!data) {
+      console.error(`加载域名 ${domain} 的Cookie失败（sync-your-cookie.json 未命中或无效）`);
+      return null;
+    }
+
+    return data;
   }
 
   findCookieFile(domain) {
