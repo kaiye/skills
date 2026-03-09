@@ -48,7 +48,10 @@ which ffmpeg > /dev/null 2>&1 || { echo "❌ 需先安装 ffmpeg"; exit 1; }
 uv run $SKILL_DIR/scripts/video_asr.py "抖音分享链接" -o ./output
 ```
 
-输出：`{video_id}_asr.txt`
+输出文件（均在 `-o` 指定的目录下）：
+- `{video_id}.mp4` — 下载的视频
+- `{video_id}.mp3` — 提取的音频（ASR 识别用）
+- `{video_id}_asr.txt` — 语音识别结果
 
 ### 第二步：OCR 硬字幕识别（辅助）
 
