@@ -115,9 +115,27 @@ def transcribe_audio(
     print(f"🎤 正在识别片段 {segment_index + 1}: {audio_path.name}")
 
     try:
+        # DashScope API 不支持本地路径，需要公有 URL
+        # 检查环境变量中是否配置了临时 HTTP 服务器
+        http_server_url = os.environ.get("DOUYIN_HTTP_SERVER_URL")
+        http_server_dir = os.environ.get("DOUYIN_HTTP_SERVER_DIR")
+        
+        if http_server_url and http_server_dir:
+            # 复制音频文件到 HTTP 服务器目录
+            http_dir = Path(http_server_dir)
+            http_dir.mkdir(parents=True, exist_ok=True)
+            dest_file = http_dir / audio_path.name
+            shutil.copy2(audio_path, dest_file)
+            file_url = f"{http_server_url.rstrip('/')}/{audio_path.name}"
+            print(f"   使用临时 URL: {file_url}")
+        else:
+            # 回退：直接传本地路径（会失败，但保持向后兼容）
+            file_url = str(audio_path.absolute())
+            print(f"   ⚠️  警告: 未配置 HTTP 服务器，使用本地路径（可能失败）")
+        
         task_response = dashscope.audio.asr.Transcription.async_call(
             model=model,
-            file_urls=[str(audio_path.absolute())],
+            file_urls=[file_url],
             language_hints=["zh", "en"],
         )
 
