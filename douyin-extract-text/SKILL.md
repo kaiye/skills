@@ -8,6 +8,21 @@ allowed-tools: Read, Bash, Grep, Glob, Write
 
 从抖音视频中提取文案，通过 ASR + OCR 双模式结合，实现高质量文案输出。
 
+## Bootstrap 检测（先于工作流执行）
+
+在执行任何工作流步骤前，**必须**先运行以下检测：
+
+```bash
+# 检测 uv
+which uv > /dev/null 2>&1 || { echo "❌ 需先安装 uv: curl -LsSf https://astral.sh/uv/install.sh | sh"; exit 1; }
+
+# 检测 ffmpeg
+which ffmpeg > /dev/null 2>&1 || { echo "❌ 需先安装 ffmpeg: brew install ffmpeg"; exit 1; }
+```
+
+> 如果检测失败，提示用户安装对应工具后再继续。
+> Python 依赖由 `uv run` 自动管理，无需手动 `pip install`。
+
 ## 环境配置
 
 ASR 模式需要阿里云百炼 API 密钥，在 shell 配置文件中设置：
@@ -19,6 +34,8 @@ export DASHSCOPE_API_KEY='your-api-key'
 
 API 密钥获取：https://bailian.console.aliyun.com/cn-beijing/?tab=demohouse#/api-key
 
+> 脚本会自动从 `~/.zshrc`、`~/.zshenv`、`~/.bashrc`、`~/.profile` 读取 `DASHSCOPE_API_KEY`，无需手动 export。
+
 ## 工作流程（必须按顺序执行）
 
 ### 第一步：ASR 语音识别（主体）
@@ -26,35 +43,30 @@ API 密钥获取：https://bailian.console.aliyun.com/cn-beijing/?tab=demohouse#
 **必须首先执行**，ASR 结果作为最终文案的主体（句子连贯）。
 
 ```bash
-python $SKILL_DIR/scripts/douyin_video_processor.py "抖音分享链接" -o ./output
+uv run $SKILL_DIR/scripts/video_asr.py "抖音分享链接" -o ./output
 ```
 
-输出：`{video_id}_transcript.txt`
+输出：`{video_id}_asr.txt`
 
 ### 第二步：OCR 硬字幕识别（辅助）
 
 **必须执行**，OCR 结果用于订正 ASR 中的专业术语错误。
 
+使用 `--local` 复用第一步已下载的视频，避免重复下载：
+
 ```bash
-python $SKILL_DIR/scripts/douyin_video_processor.py "抖音分享链接" --ocr -o ./output
+uv run $SKILL_DIR/scripts/video_ocr.py --local ./output/*.mp4 -o ./output
 ```
 
-输出：`{video_id}_transcript.txt`（会覆盖，建议先备份 ASR 结果）
+输出：`{video_id}_ocr.txt`
 
-**建议命令**（避免覆盖）：
-```bash
-# ASR 结果
-python $SKILL_DIR/scripts/douyin_video_processor.py "链接" -o ./output
-mv ./output/*_transcript.txt ./output/asr_result.txt
-
-# OCR 结果
-python $SKILL_DIR/scripts/douyin_video_processor.py "链接" --ocr -o ./output
-mv ./output/*_transcript.txt ./output/ocr_result.txt
-```
+> ASR 和 OCR 的输出文件名已区分（`_asr.txt` / `_ocr.txt`），不会互相覆盖。
 
 ### 第三步：文案订正
 
-以 ASR 结果为主体，参考 OCR 结果订正专业术语：
+在执行订正前，先读取 `$SKILL_DIR/CORRECTION.md` 中的已知订正词表作为参考。
+
+以 ASR 结果为主体，参考 OCR 结果和订正词表，订正专业术语：
 
 ```
 请基于语音识别（ASR）的效果，进行错别字和专业术语的订正。
@@ -65,10 +77,10 @@ mv ./output/*_transcript.txt ./output/ocr_result.txt
 3. 不要直接使用 OCR 结果，它可能包含视频画面中的无关文字
 
 语音识别结果（ASR）：
-[粘贴 asr_result.txt 内容]
+[读取 ./output/*_asr.txt 内容]
 
 OCR 识别结果（仅供参考）：
-[粘贴 ocr_result.txt 内容]
+[读取 ./output/*_ocr.txt 内容]
 ```
 
 常见订正词表见 [CORRECTION.md](CORRECTION.md)。
@@ -127,20 +139,32 @@ OCR 识别结果（仅供参考）：
 
 ## 常用参数
 
+### ASR 模式（video_asr.py）
+
 | 参数 | 说明 |
 |------|------|
-| `--ocr` | 使用 OCR 模式 |
-| `--local` | 处理本地视频 |
-| `-o, --output` | 指定输出目录 |
+| `--local` | 处理本地视频文件 |
+| `-o, --output` | 指定输出目录（默认 ./output） |
+| `--force-local` | 强制本地下载处理（跳过在线识别） |
 | `--info-only` | 仅获取视频信息 |
+| `-s, --segment-duration` | 视频切分时长（秒），默认 300 |
+| `-m, --model` | 语音识别模型，默认 paraformer-v2 |
 
-## 依赖安装
+### OCR 模式（video_ocr.py）
+
+| 参数 | 说明 |
+|------|------|
+| `--local` | 处理本地视频文件 |
+| `-o, --output` | 指定输出目录（默认 ./output） |
+| `--info-only` | 仅获取视频信息 |
+| `--subtitle-area` | 自定义字幕区域（默认 0.7,0.95,0.05,0.95） |
+
+## 系统依赖
 
 ```bash
-# 必须安装（ASR 模式）
-pip install requests dashscope
+# 必须安装
 brew install ffmpeg
 
-# 必须安装（OCR 模式）
-pip install opencv-python numpy paddleocr paddlepaddle
+# uv — Python 依赖由 uv 自动管理，无需手动 pip install
+# 安装 uv: curl -LsSf https://astral.sh/uv/install.sh | sh
 ```
