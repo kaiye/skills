@@ -10,28 +10,33 @@ allowed-tools: Read, Bash, Grep, Glob, Write
 
 ## Bootstrap 检测（先于工作流执行）
 
-在执行任何工作流步骤前，**必须**先运行以下检测：
+在执行任何工作流步骤前，**必须**先运行以下检测，并将 skill 目录路径存入变量：
 
 ```bash
+# 设置 SKILL_DIR（根据实际路径调整）
+SKILL_DIR="$HOME/.openclaw/workspace/github-repos/kaiye/skills/douyin-extract-text"
+
 # 检测 uv
 which uv > /dev/null 2>&1 || { echo "❌ 需先安装 uv: curl -LsSf https://astral.sh/uv/install.sh | sh"; exit 1; }
 
 # 检测 ffmpeg
-which ffmpeg > /dev/null 2>&1 || { echo "❌ 需先安装 ffmpeg: brew install ffmpeg"; exit 1; }
+which ffmpeg > /dev/null 2>&1 || { echo "❌ 需先安装 ffmpeg"; exit 1; }
 ```
 
-> 如果检测失败，提示用户安装对应工具后再继续。
+**ffmpeg 安装方式（按平台）：**
+- macOS: `brew install ffmpeg`
+- Ubuntu/Debian: `sudo apt install ffmpeg`
+- CentOS/RHEL: `sudo yum install ffmpeg`
+
 > Python 依赖由 `uv run` 自动管理，无需手动 `pip install`。
 
 ## 环境配置
 
 **无需配置！** ASR 使用本地 Faster-Whisper 模型，完全离线工作。
 
-Python 依赖由 `uv run` 自动管理，首次运行时会自动下载：
-- Faster-Whisper 模型（约 250MB）
+首次运行时会自动下载（约 250MB）：
+- Faster-Whisper small 模型
 - 相关依赖库
-
-> 如需使用阿里云 ASR（更高准确率），可选配置 `DASHSCOPE_API_KEY`，但需要额外的 HTTP 服务器配置（不推荐普通用户）。
 
 ## 工作流程（必须按顺序执行）
 
@@ -52,7 +57,8 @@ uv run $SKILL_DIR/scripts/video_asr.py "抖音分享链接" -o ./output
 使用 `--local` 复用第一步已下载的视频，避免重复下载：
 
 ```bash
-uv run $SKILL_DIR/scripts/video_ocr.py --local ./output/*.mp4 -o ./output
+# 将 {video_id} 替换为实际的视频 ID
+uv run $SKILL_DIR/scripts/video_ocr.py --local ./output/{video_id}.mp4 -o ./output
 ```
 
 输出：`{video_id}_ocr.txt`
@@ -142,10 +148,9 @@ OCR 识别结果（仅供参考）：
 |------|------|
 | `--local` | 处理本地视频文件 |
 | `-o, --output` | 指定输出目录（默认 ./output） |
-| `--force-local` | 强制本地下载处理（跳过在线识别） |
+| `--force-local` | 强制本地下载处理 |
 | `--info-only` | 仅获取视频信息 |
 | `-s, --segment-duration` | 视频切分时长（秒），默认 300 |
-| `-m, --model` | 语音识别模型，默认 paraformer-v2 |
 
 ### OCR 模式（video_ocr.py）
 
@@ -159,8 +164,11 @@ OCR 识别结果（仅供参考）：
 ## 系统依赖
 
 ```bash
-# 必须安装
+# 必须安装 ffmpeg
+# macOS:
 brew install ffmpeg
+# Ubuntu/Debian:
+sudo apt install ffmpeg
 
 # uv — Python 依赖由 uv 自动管理，无需手动 pip install
 # 安装 uv: curl -LsSf https://astral.sh/uv/install.sh | sh
