@@ -1,0 +1,58 @@
+monochrome-infographic:
+  style:
+    base: >
+      Flat, modern, clean vector hand-drawn comic style infographic.
+      Soft pastel cream background (#FFF8E1) — solid color, NO texture, NO patterns, NO decorative elements.
+      All elements have clear black outline strokes.
+    
+    line: >
+      THICK black outlines (3-4px equivalent), hand-drawn feel with slight irregularity.
+      Lines should have slight wobble and irregularity, not perfect geometric shapes.
+    
+    color: >
+      Soft, low-saturation warm palette with MONOCHROME tendency:
+      - Background: solid cream/beige (#FFF8E1)
+      - Primary: soft coral/peach (#FFB74D, #FFAB91)
+      - Secondary: mint green (#A5D6A7), sky blue (#90CAF9)
+      - Accent: warm yellow (#FFF59D) for title highlight
+      - Text: dark gray (#424242)
+      All colors muted and gentle, not vibrant.
+      Allow the model to choose a dominant color theme (e.g., blue-green, coral, etc.).
+    
+    typography: >
+      Main module titles: Large, bold Chinese text with light yellow (#FFF59D) brush stroke highlight
+      ONLY on the BOTTOM HALF of the text — like a highlighter marker underlining.
+      The yellow should be irregular and hand-drawn, not a perfect rectangle.
+      
+      Clear, rounded, handwritten style fonts.
+      Text hierarchy: Title text VERY LARGE (48pt+), section headers medium (24pt), labels small (16pt).
+    
+    characters: >
+      Friendly, rounded characters and cute anthropomorphic robot designs.
+      ULTRA-SIMPLE faces — dot eyes + curved smile line, no detailed features.
+    
+    composition: >
+      ASYMMETRIC, CREATIVE, BRAINSTORMING FEEL.
+      Do NOT use rigid grid layout.
+      Elements can be at different sizes and angles.
+      Make it feel organic and spontaneous, like a creative workshop whiteboard.
+      Avoid perfect alignment and symmetry.
+      
+      Connectors: Flowing, curved arrows (with short dashed trails) to represent data flow or logic flow.
+      
+      Icons: BOLD, THICK line icons — gears, documents, brains should use thick strokes (3-4px), not fine details.
+      Simplified and chunky.
+      
+      Bottom cards: DOUBLE-LINE borders (inner and outer frame) with hand-drawn wobble.
+      
+      NO decorative elements: NO stars, NO sparkles, NO ornamental frames, NO shadows, NO gradients, NO background patterns.
+      Keep it clean and focused on content semantics.
+    
+    text_rendering: >
+      CRITICAL — Chinese text rendering rules:
+      All Chinese characters must be sharp, crisp, and 100% correctly rendered.
+      Do NOT generate blurry, distorted, or hallucinated characters.
+      Use large font sizes.
+      Keep text SHORT: titles under 10 characters, labels under 6 characters.
+      
+      Render at 4K resolution for maximum text sharpness.

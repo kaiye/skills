@@ -1,0 +1,52 @@
+brainstorming-warm-cartoon:
+  style:
+    base: >
+      Flat, modern, clean vector hand-drawn comic style infographic.
+      PURE WHITE background (#FFFFFF) — solid color, NO texture, NO patterns, NO decorative elements.
+      All elements have clear black outline strokes.
+    
+    line: >
+      THICK black outlines (3-4px equivalent), hand-drawn feel with slight irregularity.
+      Lines should have slight wobble and irregularity, not perfect geometric shapes.
+    
+    color: >
+      Use NATURAL, DIVERSE pastel colors based on element semantics.
+      Let each element have its own appropriate color based on what it represents
+      (e.g., documents in soft blue, gears in orange, brain in pink, etc.).
+      Colors should be muted and gentle, not vibrant.
+      Avoid forcing sections into uniform color blocks.
+    
+    typography: >
+      Main module titles: Large, bold Chinese text with light yellow (#FFF59D) brush stroke highlight
+      ONLY on the BOTTOM HALF of the text — like a highlighter marker underlining.
+      The yellow should be irregular and hand-drawn, not a perfect rectangle.
+      
+      Clear, rounded, handwritten style fonts.
+      Text hierarchy: Title text VERY LARGE (48pt+), section headers medium (24pt), labels small (16pt).
+    
+    characters: >
+      Friendly, rounded characters and cute anthropomorphic robot designs.
+    
+    composition: >
+      ASYMMETRIC, CREATIVE, BRAINSTORMING FEEL.
+      Do NOT use rigid grid layout.
+      Elements can be at different sizes and angles.
+      Make it feel organic and spontaneous, like a creative workshop whiteboard.
+      Avoid perfect alignment and symmetry.
+      
+      Connectors: Flowing, curved arrows (with short dashed trails) to represent data flow or logic flow.
+      
+      Icons: BOLD, THICK line icons — gears, documents, brains should use thick strokes (3-4px), not fine details.
+      Simplified and chunky.
+      
+      NO decorative elements: NO stars, NO sparkles, NO ornamental frames, NO shadows, NO gradients, NO background patterns.
+      Keep it clean and focused on content semantics.
+    
+    text_rendering: >
+      CRITICAL — Chinese text rendering rules:
+      All Chinese characters must be sharp, crisp, and 100% correctly rendered.
+      Do NOT generate blurry, distorted, or hallucinated characters.
+      Use large font sizes.
+      Keep text SHORT: titles under 10 characters, labels under 6 characters.
+      
+      Render at 4K resolution for maximum text sharpness.

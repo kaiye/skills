@@ -1,0 +1,26 @@
+simple-warm-infographic:
+  style:
+    base: >
+      Flat, modern, clean vector hand-drawn comic style infographic.
+      Soft pastel cream background (#FFF8E1) — solid color, NO texture, NO patterns, NO decorative elements.
+      All elements have clear black outline strokes.
+    
+    line: >
+      THICK black outlines (3-4px equivalent), hand-drawn feel with slight irregularity.
+    
+    typography: >
+      Main module titles: Large, bold Chinese text with light yellow (#FFF59D) brush stroke highlight
+      ONLY on the BOTTOM HALF of the text.
+    
+    characters: >
+      Friendly, rounded characters and cute anthropomorphic robot designs.
+      ULTRA-SIMPLE faces — dot eyes + curved smile line.
+    
+    text_rendering: >
+      CRITICAL — Chinese text rendering rules:
+      All Chinese characters must be sharp, crisp, and 100% correctly rendered.
+      Do NOT generate blurry, distorted, or hallucinated characters.
+      Use large font sizes.
+      Keep text SHORT: titles under 10 characters, labels under 6 characters.
+      
+      Render at 4K resolution for maximum text sharpness.
