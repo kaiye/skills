@@ -13,6 +13,7 @@ Claude Code 自定义 Skills 集合。
 | [page-fetcher](./page-fetcher/) | 智能网页抓取器（自动降级：HTTP → Puppeteer + Cookie）。支持 OpenClaw browser relay 自动提取 cookie，或通过 mcp-fetch-page 扩展手动提供。按 rules.json 配置选择器和策略。 |
 | [wechat-publisher](./wechat-publisher/) | 将 Markdown 文章规范化处理后发布到微信公众号草稿箱，支持发布前预检、图片路径修复与封面图生成。 |
 | [writing-team](./writing-team/) | 7 人 AI 写作团队编排。素材猎手、主笔、事实核查、风格审计、标题工匠协作完成长文创作，支持迭代修改和按需审核。 |
+| [transparent-png](./transparent-png/) | 去除棋盘格/双色背景，输出透明 PNG：边缘采样聚类两种背景色 + 连通 floodfill。 |
 
 ## 安装方法
 
