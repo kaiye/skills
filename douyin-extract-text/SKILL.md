@@ -25,30 +25,13 @@ which ffmpeg > /dev/null 2>&1 || { echo "❌ 需先安装 ffmpeg: brew install f
 
 ## 环境配置
 
-ASR 模式需要阿里云百炼 API 密钥，在 shell 配置文件中设置：
+**无需配置！** ASR 使用本地 Faster-Whisper 模型，完全离线工作。
 
-```bash
-# 添加到 ~/.zshrc 或 ~/.bashrc
-export DASHSCOPE_API_KEY='your-api-key'
+Python 依赖由 `uv run` 自动管理，首次运行时会自动下载：
+- Faster-Whisper 模型（约 250MB）
+- 相关依赖库
 
-# ASR 本地模式需要 HTTP 服务器提供音频文件访问（DashScope API 不支持本地路径）
-export DOUYIN_HTTP_SERVER_URL='http://your-server-ip:8899'
-export DOUYIN_HTTP_SERVER_DIR='/path/to/http/server/root'
-```
-
-API 密钥获取：https://bailian.console.aliyun.com/cn-beijing/?tab=demohouse#/api-key
-
-> 脚本会自动从 `~/.zshrc`、`~/.zshenv`、`~/.bashrc`、`~/.profile` 读取 `DASHSCOPE_API_KEY`，无需手动 export。
-
-**HTTP 服务器配置说明**：
-
-DashScope ASR API 要求音频文件通过公有 URL 访问，不支持本地路径。本地模式下需要：
-
-1. 启动一个 HTTP 服务器（如 `python3 -m http.server 8899`）
-2. 设置 `DOUYIN_HTTP_SERVER_URL` 为服务器地址
-3. 设置 `DOUYIN_HTTP_SERVER_DIR` 为服务器根目录
-
-脚本会自动将音频文件复制到该目录，并通过 URL 提交给 DashScope。
+> 如需使用阿里云 ASR（更高准确率），可选配置 `DASHSCOPE_API_KEY`，但需要额外的 HTTP 服务器配置（不推荐普通用户）。
 
 ## 工作流程（必须按顺序执行）
 
