@@ -68,25 +68,29 @@ uv run $SKILL_DIR/scripts/video_ocr.py --local ./output/{video_id}.mp4 -o ./outp
 
 > ASR 和 OCR 的输出文件名已区分（`_asr.txt` / `_ocr.txt`），不会互相覆盖。
 
-### 第三步：文案订正
+### 第三步：综合文案整理
 
-在执行订正前，先读取 `$SKILL_DIR/CORRECTION.md` 中的已知订正词表作为参考。
+在执行整理前，先读取 `$SKILL_DIR/CORRECTION.md` 中的已知订正词表作为参考。
 
-以 ASR 结果为主体，参考 OCR 结果和订正词表，订正专业术语：
+**综合 ASR 和 OCR 结果，生成完整文案**：
 
 ```
-请基于语音识别（ASR）的效果，进行错别字和专业术语的订正。
+请综合语音识别（ASR）和 OCR 识别结果，生成完整的视频文案。
 
-订正规则：
-1. ASR 结果是主体，保持其句子结构和连贯性
-2. OCR 结果仅用于查找正确的专业术语拼写
-3. 不要直接使用 OCR 结果，它可能包含视频画面中的无关文字
+整理规则：
+1. OCR 结果是硬字幕（视频文案主体），优先使用
+2. ASR 结果可能包含 BGM 歌词、画外音等额外信息，酌情补充
+3. 如果 OCR 为空或内容很少，以 ASR 为主
+4. 使用订正词表修正专业术语错误
 
-语音识别结果（ASR）：
+OCR 识别结果（硬字幕）：
+[读取 ./output/*_ocr.txt 内容]
+
+语音识别结果（ASR，含 BGM/画外音）：
 [读取 ./output/*_asr.txt 内容]
 
-OCR 识别结果（仅供参考）：
-[读取 ./output/*_ocr.txt 内容]
+订正词表：
+[读取 $SKILL_DIR/CORRECTION.md 内容]
 ```
 
 常见订正词表见 [CORRECTION.md](CORRECTION.md)。

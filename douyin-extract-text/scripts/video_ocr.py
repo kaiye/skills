@@ -105,8 +105,10 @@ def _process_segment_ocr(args: tuple) -> tuple[int, list]:
     sub_area = subtitle_area or DEFAULT_SUBTITLE_AREA
 
     def extract_text(frame):
-        """从帧中提取文字。"""
+        """从帧中提取文字（支持动态区域检测）。"""
         h, w = frame.shape[:2]
+        
+        # 先尝试底部字幕区域
         y1, y2 = int(h * sub_area[0]), int(h * sub_area[1])
         x1, x2 = int(w * sub_area[2]), int(w * sub_area[3])
         region = frame[y1:y2, x1:x2]
@@ -121,6 +123,22 @@ def _process_segment_ocr(args: tuple) -> tuple[int, list]:
         texts, scores = _run_ocr(engine, processed)
         # 仅保留置信度 > 0.7 的文本
         filtered = [t for t, s in zip(texts, scores) if s > 0.7]
+        
+        # 如果底部没识别到，尝试画面中心区域
+        if not filtered:
+            # 中心区域：垂直 30%-70%，水平 10%-90%
+            y1_center, y2_center = int(h * 0.3), int(h * 0.7)
+            x1_center, x2_center = int(w * 0.1), int(w * 0.9)
+            region_center = frame[y1_center:y2_center, x1_center:x2_center]
+            
+            gray_center = cv2.cvtColor(region_center, cv2.COLOR_BGR2GRAY)
+            enhanced_center = clahe.apply(gray_center)
+            _, binary_center = cv2.threshold(enhanced_center, 200, 255, cv2.THRESH_BINARY)
+            processed_center = cv2.cvtColor(binary_center, cv2.COLOR_GRAY2BGR)
+            
+            texts_center, scores_center = _run_ocr(engine, processed_center)
+            filtered = [t for t, s in zip(texts_center, scores_center) if s > 0.7]
+        
         return " ".join(filtered)
 
     def is_similar(t1: str, t2: str) -> bool:
