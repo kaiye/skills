@@ -1,6 +1,6 @@
 # /// script
 # requires-python = ">=3.10"
-# dependencies = ["requests", "dashscope"]
+# dependencies = ["requests", "dashscope", "faster-whisper"]
 # ///
 """
 视频 ASR 语音识别工具
@@ -111,67 +111,28 @@ def transcribe_audio(
     segment_index: int = 0,
     model: str = DEFAULT_MODEL,
 ) -> Dict:
-    """转录单个音频文件。"""
+    """转录单个音频文件。
+    
+    默认使用本地 Faster-Whisper（离线、免费、无需配置）。
+    """
     print(f"🎤 正在识别片段 {segment_index + 1}: {audio_path.name}")
 
     try:
-        # DashScope API 不支持本地路径，需要公有 URL
-        # 检查环境变量中是否配置了临时 HTTP 服务器
-        http_server_url = os.environ.get("DOUYIN_HTTP_SERVER_URL")
-        http_server_dir = os.environ.get("DOUYIN_HTTP_SERVER_DIR")
+        # 使用本地 Faster-Whisper
+        from faster_whisper import WhisperModel
         
-        if http_server_url and http_server_dir:
-            # 复制音频文件到 HTTP 服务器目录
-            http_dir = Path(http_server_dir)
-            http_dir.mkdir(parents=True, exist_ok=True)
-            dest_file = http_dir / audio_path.name
-            shutil.copy2(audio_path, dest_file)
-            file_url = f"{http_server_url.rstrip('/')}/{audio_path.name}"
-            print(f"   使用临时 URL: {file_url}")
-        else:
-            # 回退：直接传本地路径（会失败，但保持向后兼容）
-            file_url = str(audio_path.absolute())
-            print(f"   ⚠️  警告: 未配置 HTTP 服务器，使用本地路径（可能失败）")
+        print(f"   使用本地 Faster-Whisper (small 模型)...")
+        whisper_model = WhisperModel("small", device="cpu", compute_type="int8")
+        segments, info = whisper_model.transcribe(str(audio_path), language="zh")
         
-        task_response = dashscope.audio.asr.Transcription.async_call(
-            model=model,
-            file_urls=[file_url],
-            language_hints=["zh", "en"],
-        )
-
-        transcription_response = dashscope.audio.asr.Transcription.wait(
-            task=task_response.output.task_id
-        )
-
-        if transcription_response.status_code == HTTPStatus.OK:
-            results = transcription_response.output.get("results", [])
-            for transcription in results:
-                if "transcription_url" in transcription:
-                    url = transcription["transcription_url"]
-                    result = json.loads(request.urlopen(url).read().decode("utf8"))
-                    if "transcripts" in result and len(result["transcripts"]) > 0:
-                        text = result["transcripts"][0]["text"]
-                        return {
-                            "segment_index": segment_index,
-                            "status": "success",
-                            "text": text,
-                            "file": str(audio_path),
-                        }
-
-            return {
-                "segment_index": segment_index,
-                "status": "success",
-                "text": "",
-                "file": str(audio_path),
-            }
-        else:
-            return {
-                "segment_index": segment_index,
-                "status": "error",
-                "text": "",
-                "error": transcription_response.output.get("message", "未知错误"),
-                "file": str(audio_path),
-            }
+        text = " ".join([seg.text.strip() for seg in segments])
+        
+        return {
+            "segment_index": segment_index,
+            "status": "success",
+            "text": text,
+            "file": str(audio_path),
+        }
 
     except Exception as e:
         return {
