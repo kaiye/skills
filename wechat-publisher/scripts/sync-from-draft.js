@@ -197,11 +197,22 @@ async function main() {
   const changes = buildDiffReport(localMd, draftMd);
   printReport(changes);
 
-  // --apply：把 diff 结果输出为 JSON 供外部处理（或后续自动 patch）
-  if (applyFlag) {
+  if (applyFlag && changes.length > 0) {
+    // 提取本地 frontmatter（--- ... --- 块）
+    const fmMatch = localRaw.match(/^(---[\s\S]*?---\n?)/);
+    const frontmatter = fmMatch ? fmMatch[1] : '';
+
+    // 用草稿 MD 替换正文，frontmatter 保持不变
+    const patched = frontmatter + draftMd.trim() + '\n';
+    fs.writeFileSync(path.resolve(localPath), patched, 'utf8');
+    console.log(`✅ 已将草稿内容同步回本地文件：${localPath}`);
+
+    // 同时保存 JSON diff 供归档
     const outPath = localPath.replace(/\.md$/, '.draft-diff.json');
     fs.writeFileSync(outPath, JSON.stringify(changes, null, 2), 'utf8');
-    console.log(`💾 diff 结果已保存：${outPath}`);
+    console.log(`💾 diff 记录已保存：${outPath}`);
+  } else if (applyFlag && changes.length === 0) {
+    console.log('✅ 无差异，本地文件无需更新。');
   }
 }
 
