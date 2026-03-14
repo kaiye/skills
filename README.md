@@ -11,8 +11,9 @@ Claude Code 自定义 Skills 集合。
 | [gemini-image-gen](./gemini-image-gen/) | 使用 Gemini 生成和编辑配图。支持手绘白板风、精致矢量图风、四格漫画三种预设模板，项目可自定义模板覆盖默认值。 |
 | [md2pdf](./md2pdf/) | 将 Markdown 文件转换为 PDF，支持中文、表格、代码高亮。基于 marked + Chrome headless，跨平台兼容。 |
 | [page-fetcher](./page-fetcher/) | 智能网页抓取器（自动降级：HTTP → Puppeteer + Cookie）。支持 OpenClaw browser relay 自动提取 cookie，或通过 mcp-fetch-page 扩展手动提供。按 rules.json 配置选择器和策略。 |
-| [wechat-publisher](./wechat-publisher/) | 将 Markdown 文章规范化处理后发布到微信公众号草稿箱，支持发布前预检、图片路径修复与封面图生成。 |
-| [writing-team](./writing-team/) | 7 人 AI 写作团队编排。素材猎手、主笔、事实核查、风格审计、标题工匠协作完成长文创作，支持迭代修改和按需审核。 |
+| [voice-article](./voice-article/) | 语音口述驱动的文章创作流程。发送语音录音，AI 转录整理、多轮迭代，支持截图标注 review（红=删除，黄=修改）和封面图生成。 |
+| [wechat-publisher](./wechat-publisher/) | 将 Markdown 文章规范化处理后发布到微信公众号草稿箱，支持草稿 diff 同步回本地、意图备注识别（；指令）。 |
+| [writing-team](./writing-team/) | 7 人 AI 写作团队编排。素材猎手、主笔、事实核查、风格审计、标题工匠协作完成长文创作，适合需要多角度打磨的自媒体长文。 |
 | [transparent-png](./transparent-png/) | 去除棋盘格/双色背景，输出透明 PNG：边缘采样聚类两种背景色 + 连通 floodfill。 |
 
 ## 安装方法
@@ -60,6 +61,10 @@ skills/
 │       ├── read-spa.js        # Puppeteer 抓取（需 cookie）
 │       ├── extract-cookies.js # 从 browser relay 提取 cookie
 │       └── save-cookie.js     # 保存用户上传的 cookie
+├── voice-article/
+│   ├── SKILL.md          # Skill 定义文件（语音创作流程）
+│   └── references/
+│       └── sop.md        # 完整 7 步 SOP（含精简 + 标题优化）
 ├── wechat-publisher/
 │   ├── SKILL.md          # Skill 定义文件（公众号发布流程）
 │   └── references/

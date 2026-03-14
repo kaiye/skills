@@ -2,7 +2,8 @@
 name: writing-team
 description: |
   7 人 AI 写作团队编排。启动素材猎手、主笔、事实核查、风格审计、标题工匠协作完成长文创作。
-  触发场景：用户要求写公众号文章、自媒体内容、长文创作，或提到"用我的风格写"、"去 AI 味"。
+  触发场景：用户要求写自媒体长文、需要素材调研或事实核查、提到"用我的风格写"、"去 AI 味"、"多角度打磨"。
+  不适用于语音录音整理（请用 voice-article skill）。
   依赖 Agent Teams 实验功能（CLAUDE_CODE_EXPERIMENTAL_AGENT_TEAMS=1）。
 ---
 
