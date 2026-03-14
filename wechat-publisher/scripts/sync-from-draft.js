@@ -134,7 +134,7 @@ function buildDiffReport(localMd, draftMd) {
 
 // ── 意图识别：检测括号备注 （...） ──────────────────────────────────────────
 
-const INTENT_RE = /（[^）]+）/g;
+const INTENT_RE = /（；[^）]*）/g;
 
 function extractIntents(changes) {
   const intents = [];
