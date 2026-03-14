@@ -1,0 +1,325 @@
+/*
+ *     Typora Theme - Phycat    /    Author - sumruler
+ *     https://github.com/sumruler/typora-theme-phycat
+ */
+
+:root {
+    /* 标题后小图标，借鉴自思源笔记主题——Savor */
+    --h3-r-graphic: url("data:image/svg+xml;utf8,<svg fill='rgba(74, 200, 141, 0.5)' height='28' viewBox='0 0 32 32' width='24' xmlns='http://www.w3.org/2000/svg'><path d='M4.571 25.143c-1.257 0-2.286 1.029-2.286 2.286s1.029 2.286 2.286 2.286 2.286-1.029 2.286-2.286-1.029-2.286-2.286-2.286zM4.571 18.286c-1.257 0-2.286 1.029-2.286 2.286s1.029 2.286 2.286 2.286 2.286-1.029 2.286-2.286-1.029-2.286-2.286-2.286zM11.429 25.143c-1.257 0-2.286 1.029-2.286 2.286s1.029 2.286 2.286 2.286 2.286-1.029 2.286-2.286-1.029-2.286-2.286-2.286z'/></svg>")
+        no-repeat center;
+    --h4-r-graphic: url("data:image/svg+xml;utf8,<svg fill='rgba(74, 200, 141, 0.5)' height='24' viewBox='0 0 32 32' width='24' xmlns='http://www.w3.org/2000/svg'><path d='M4.571 25.143c-1.257 0-2.286 1.029-2.286 2.286s1.029 2.286 2.286 2.286 2.286-1.029 2.286-2.286-1.029-2.286-2.286-2.286zM4.571 18.286c-1.257 0-2.286 1.029-2.286 2.286s1.029 2.286 2.286 2.286 2.286-1.029 2.286-2.286-1.029-2.286-2.286-2.286zM11.429 25.143c-1.257 0-2.286 1.029-2.286 2.286s1.029 2.286 2.286 2.286 2.286-1.029 2.286-2.286-1.029-2.286-2.286-2.286zM11.429 22.857c1.257 0 2.286-1.029 2.286-2.286s-1.029-2.286-2.286-2.286-2.286 1.029-2.286 2.286 1.029 2.286 2.286 2.286z'/></svg>")
+        no-repeat center;
+    --h5-r-graphic: url("data:image/svg+xml;utf8,<svg fill='rgba(74, 200, 141, 0.5)' height='24' viewBox='0 0 32 32' width='24' xmlns='http://www.w3.org/2000/svg'><path d='M4.571 18.286c-1.257 0-2.286 1.029-2.286 2.286s1.029 2.286 2.286 2.286 2.286-1.029 2.286-2.286-1.029-2.286-2.286-2.286zM11.429 22.857c1.257 0 2.286-1.029 2.286-2.286s-1.029-2.286-2.286-2.286-2.286 1.029-2.286 2.286 1.029 2.286 2.286 2.286zM4.571 25.143c-1.257 0-2.286 1.029-2.286 2.286s1.029 2.286 2.286 2.286 2.286-1.029 2.286-2.286-1.029-2.286-2.286-2.286zM11.429 25.143c-1.257 0-2.286 1.029-2.286 2.286s1.029 2.286 2.286 2.286 2.286-1.029 2.286-2.286-1.029-2.286-2.286-2.286zM4.571 11.429c-1.257 0-2.286 1.029-2.286 2.286s1.029 2.286 2.286 2.286 2.286-1.029 2.286-2.286-1.029-2.286-2.286-2.286z'/></svg>")
+        no-repeat center;
+    --h6-r-graphic: url("data:image/svg+xml;utf8,<svg fill='rgba(74, 200, 141, 0.5)' height='24' viewBox='0 0 32 32' width='24' xmlns='http://www.w3.org/2000/svg'><path d='M4.571 25.143c-1.257 0-2.286 1.029-2.286 2.286s1.029 2.286 2.286 2.286 2.286-1.029 2.286-2.286-1.029-2.286-2.286-2.286zM4.571 18.286c-1.257 0-2.286 1.029-2.286 2.286s1.029 2.286 2.286 2.286 2.286-1.029 2.286-2.286-1.029-2.286-2.286-2.286zM4.571 11.429c-1.257 0-2.286 1.029-2.286 2.286s1.029 2.286 2.286 2.286 2.286-1.029 2.286-2.286-1.029-2.286-2.286-2.286zM11.429 18.286c-1.257 0-2.286 1.029-2.286 2.286s1.029 2.286 2.286 2.286 2.286-1.029 2.286-2.286-1.029-2.286-2.286-2.286zM11.429 25.143c-1.257 0-2.286 1.029-2.286 2.286s1.029 2.286 2.286 2.286 2.286-1.029 2.286-2.286-1.029-2.286-2.286-2.286zM11.429 16c1.257 0 2.286-1.029 2.286-2.286s-1.029-2.286-2.286-2.286-2.286 1.029-2.286 2.286 1.029 2.286 2.286 2.286z'/></svg>")
+        no-repeat center;
+
+    /* 主题颜色 */
+    --head-title-color: #3db8bf;
+    /* 标题主色 */
+    --head-title-h2-color: #fff;
+    --head-title-h2-background: linear-gradient(to right, #3db8d3, #80f7c4);
+    /* 二级标题主色，因为二级标题是背景色的，所以单独设置 */
+
+    --element-color: #3db8bf;
+    /* 元素主色 */
+    --element-color-deep: #089ba3;
+    /* 元素深色 */
+    --element-color-shallow: #7aeaf0;
+    /* 元素浅色 */
+    --element-color-so-shallow: #7aeaf077;
+    /* 元素很浅色 */
+    --element-color-soo-shallow: #7aeaf018;
+    /* 元素非常浅色 */
+
+    --element-color-linecode: #089ba3;
+    /* 行内代码文字色 */
+    --element-color-linecode-background: #7aeaf018;
+    /* 行内代码背景色 */
+}
+#wenyan {
+    font-size: 14px;
+    line-height: 1.75;
+    letter-spacing: 1.1px;
+    word-break: break-word;
+    word-wrap: break-word;
+    text-align: left;
+}
+#wenyan p {
+    text-align: justify;
+    margin: 10px 0;
+    word-spacing: 2px;
+}
+#wenyan h3::after,
+#wenyan h4::after,
+#wenyan h5::after,
+#wenyan h6::after {
+    content: "";
+    margin-left: 0.2em;
+    height: 2em;
+    width: 1.2em;
+}
+#wenyan h3::after {
+    background: var(--h3-r-graphic);
+    background-position-y: -2px;
+}
+#wenyan h4::after {
+    background: var(--h4-r-graphic);
+    background-position-y: -2px;
+}
+#wenyan h5::after {
+    background: var(--h5-r-graphic);
+    background-position-y: -1px;
+}
+#wenyan h6::after {
+    background: var(--h6-r-graphic);
+    background-position-y: -1px;
+}
+#wenyan h1 {
+    text-align: center;
+    font-weight: bold;
+    font-size: 1.4em;
+}
+#wenyan h2 {
+    color: var(--head-title-h2-color);
+    font-size: 1.4em;
+    line-height: 1.6;
+    width: fit-content;
+    font-weight: bold;
+    margin: 20px 0 5px;
+    padding: 1px 12.5px;
+    border-radius: 4px;
+    background: var(--head-title-h2-background);
+    background-size: 200% 100%;
+    background-position: 0% 0%;
+    display: inline-block;
+}
+#wenyan h3,
+h4,
+h5,
+h6 {
+    font-weight: bold;
+    display: flex;
+    align-items: top;
+}
+#wenyan h3 {
+    width: fit-content;
+    margin: 20px 0 5px;
+    font-size: 1.3em;
+    padding-left: 10px;
+    border-left: 5px solid var(--head-title-color);
+}
+#wenyan h3 span {
+    border-bottom: 2px hidden var(--head-title-color);
+}
+#wenyan h4 {
+    margin: 20px 0 5px;
+    font-size: 1.15em;
+}
+#wenyan h4::before {
+    content: "";
+    margin-right: 7px;
+    margin-top: 8px;
+    background-color: var(--head-title-color);
+    width: 10px;
+    height: 10px;
+    border-radius: 100%;
+    border: var(--head-title-color) 1px solid;
+}
+#wenyan h5 {
+    margin: 20px 0 5px;
+    font-size: 1.1em;
+}
+#wenyan h5::before {
+    content: "";
+    margin-right: 7px;
+    margin-top: 8px;
+    display: inline-block;
+    background-color: #ffffff;
+    width: 10px;
+    height: 10px;
+    border-radius: 100%;
+    border: var(--head-title-color) 2px solid;
+}
+#wenyan h6 {
+    margin: 20px 0 5px;
+    font-size: 1.1em;
+}
+#wenyan h6::before {
+    content: "⁘";
+    color: var(--head-title-color);
+    margin-right: 7px;
+}
+
+#wenyan ol {
+    margin-left: 2px;
+    padding-left: 12px;
+    margin-bottom: 0px;
+    margin-top: 0px;
+}
+
+#wenyan ul {
+    list-style-type: disc;
+    margin-bottom: 0px;
+    margin-top: 0px;
+}
+
+#wenyan ul ul {
+    list-style-type: circle;
+}
+
+#wenyan ul ul ul {
+    list-style-type: square;
+}
+
+#wenyan ol {
+    padding-left: 27px;
+    list-style-type: decimal;
+}
+#wenyan ol ol {
+    list-style-type: lower-alpha;
+}
+#wenyan ol ol ol {
+    list-style-type: lower-roman;
+}
+
+#wenyan li {
+    color: #333;
+    margin: 0px 6px;
+    word-spacing: 2px;
+    line-height: 2.5;
+    position: relative;
+}
+#wenyan li > p {
+    margin: 0;
+}
+#wenyan blockquote {
+    font-size: 12px;
+    margin-left: 12px;
+    text-align: justify;
+    padding: 12px;
+    background: var(--element-color-soo-shallow);
+    border: 0px solid var(--element-color);
+    border-left-color: var(--element-color);
+    border-left-width: 4px;
+    border-radius: 4px;
+    line-height: 26px;
+}
+#wenyan a {
+    font-weight: bolder;
+    text-decoration: none;
+    border-bottom: 1px solid #3db8bf;
+}
+
+#wenyan strong {
+    font-weight: bold;
+}
+#wenyan em {
+    font-style: italic;
+}
+#wenyan del {
+    text-decoration-color: var(--element-color-deep);
+}
+#wenyan hr {
+    height: 1px;
+    padding: 0;
+    border: none;
+    border-top: 2px solid var(--head-title-color);
+}
+#wenyan img {
+    max-width: 90%;
+    display: block;
+    border-radius: 6px;
+    margin: 10px auto;
+    object-fit: contain;
+}
+#wenyan p code {
+    padding: 3px 3px 1px;
+    color: var(--element-color-linecode);
+    background: var(--element-color-linecode-background);
+    border-radius: 3px;
+    letter-spacing: 0.5px;
+}
+#wenyan li code {
+    color: var(--element-color-linecode);
+}
+#wenyan pre {
+    border-radius: 5px;
+    line-height: 2;
+    margin: 1em 0.5em;
+    padding: 0.5em;
+    box-shadow: rgba(0, 0, 0, 0.55) 0px 1px 5px;
+    font-size: 12px;
+}
+#wenyan pre code {
+    display: block;
+    overflow-x: auto;
+    margin: 0.5em;
+    padding: 0;
+}
+#wenyan table {
+    border-collapse: collapse;
+    margin: 1.4em auto;
+    max-width: 100%;
+    table-layout: fixed;
+    text-align: left;
+    overflow: auto;
+    display: table;
+    word-wrap: break-word;
+    word-break: break-all;
+}
+#wenyan table td,
+#wenyan table th {
+    font-size: 10px;
+    padding: 9px 12px;
+    line-height: 22px;
+    border: 1px solid var(--element-color-deep);
+    vertical-align: top;
+}
+#wenyan table th {
+    font-weight: bold;
+    background-color: var(--element-color-soo-shallow);
+    color: var(--element-color-deep);
+}
+
+#wenyan .footnote {
+    color: var(--primary-color);
+}
+#wenyan #footnotes p {
+    display: flex;
+    margin: 0;
+    font-size: 0.9em;
+}
+#wenyan .footnote-num {
+    display: inline;
+    width: 10%;
+}
+#wenyan .footnote-txt {
+    display: inline;
+    width: 90%;
+    word-wrap: break-word;
+    word-break: break-all;
+}
+
+/* ===== 自定义覆盖 ===== */
+
+/* 1. 去掉 hr 的 border，不渲染分隔线 */
+#wenyan hr {
+    border: none !important;
+    border-top: none !important;
+    height: 0 !important;
+    margin: 0 !important;
+}
+
+/* 2. strong 渲染薄荷绿下划线（复用 hr 的 border 样式） */
+#wenyan p strong,
+#wenyan li strong {
+    border-bottom: 2px solid var(--head-title-color) !important;
+    font-weight: bold;
+}
+
+/* 3. 去掉 section 上 JS 注入的 font-family 和 font-size，继承微信默认 */
+#wenyan {
+    font-family: inherit !important;
+    font-size: inherit !important;
+}
