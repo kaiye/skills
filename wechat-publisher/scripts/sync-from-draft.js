@@ -132,6 +132,26 @@ function buildDiffReport(localMd, draftMd) {
   return changes;
 }
 
+// ── 意图识别：检测括号备注 （...） ──────────────────────────────────────────
+
+const INTENT_RE = /（[^）]+）/g;
+
+function extractIntents(changes) {
+  const intents = [];
+  changes.forEach((c, idx) => {
+    const text = c.new || c.old || '';
+    const matches = [...text.matchAll(INTENT_RE)];
+    if (matches.length > 0) {
+      intents.push({
+        changeIndex: idx + 1,
+        context: text,
+        notes: matches.map(m => m[0]),
+      });
+    }
+  });
+  return intents;
+}
+
 // ── 打印人类可读报告 ────────────────────────────────────────────────────────
 
 function printReport(changes) {
@@ -142,7 +162,9 @@ function printReport(changes) {
 
   console.log(`\n发现 ${changes.length} 处差异：\n`);
   changes.forEach((c, idx) => {
-    console.log(`[${idx + 1}] ${c.type === 'replace' ? '【修改】' : c.type === 'delete' ? '【删除】' : '【新增】'}`);
+    const label = c.type === 'replace' ? '【修改】' : c.type === 'delete' ? '【删除】' : '【新增】';
+    const intentFlag = (c.new || c.old || '').match(INTENT_RE) ? ' ⚠️ 含意图备注' : '';
+    console.log(`[${idx + 1}] ${label}${intentFlag}`);
     if (c.type === 'replace') {
       console.log(`  原：${c.old}`);
       console.log(`  改：${c.new}`);
@@ -157,6 +179,18 @@ function printReport(changes) {
     }
     console.log();
   });
+
+  // 单独汇总意图备注
+  const intents = extractIntents(changes);
+  if (intents.length > 0) {
+    console.log('─────────────────────────────────────');
+    console.log('⚠️  发现以下意图备注，apply 前需确认处理方式：\n');
+    intents.forEach(it => {
+      console.log(`  [差异 ${it.changeIndex}] ${it.notes.join(' / ')}`);
+    });
+    console.log('\n请告知如何处理后再执行 --apply。');
+    console.log('─────────────────────────────────────\n');
+  }
 }
 
 // ── 主流程 ──────────────────────────────────────────────────────────────────
@@ -196,6 +230,13 @@ async function main() {
   console.log('🔍 对比差异...\n');
   const changes = buildDiffReport(localMd, draftMd);
   printReport(changes);
+
+  // 有意图备注时，阻止 apply，等人工确认
+  const intents = extractIntents(changes);
+  if (applyFlag && intents.length > 0) {
+    console.log('\n❌ apply 已阻止：存在意图备注，请先确认处理方式后再执行 --apply。');
+    process.exit(1);
+  }
 
   if (applyFlag && changes.length > 0) {
     // 提取本地 frontmatter（--- ... --- 块）
