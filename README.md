@@ -15,6 +15,7 @@ Claude Code 自定义 Skills 集合。
 | [wechat-publisher](./wechat-publisher/) | 将 Markdown 文章规范化处理后发布到微信公众号草稿箱，支持草稿 diff 同步回本地、意图备注识别（；指令）。 |
 | [writing-team](./writing-team/) | 7 人 AI 写作团队编排。素材猎手、主笔、事实核查、风格审计、标题工匠协作完成长文创作，适合需要多角度打磨的自媒体长文。 |
 | [transparent-png](./transparent-png/) | 去除棋盘格/双色背景，输出透明 PNG：边缘采样聚类两种背景色 + 连通 floodfill。 |
+| [veo-video-gen](./veo-video-gen/) | 使用 Google Veo API（veo-3.1-fast-generate-preview）生成视频。支持三种模式：文生视频（直接给提示词）、视频理解→提示词生成（Gemini VLM 分析参考视频→讨论修改提示词→生成）、带参考图生成（图片作构图/风格参考）。自动使用 GEMINI_API_KEY 和 SOCKS5 代理。 |
 
 ## 安装方法
 
